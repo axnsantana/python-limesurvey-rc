@@ -6,9 +6,15 @@ class PyLimeRc:
         self.url=url
         self.session_key=None
 
+    def set_headers(self,headers):
+        self.headers = headers
 
     def set_url(self,url):
         self.url=url
+
+    def __format_params(self,params):
+        del params['self']
+        return dict((k,v) for k,v in params.iteritems() if v is not None)
 
     def call_rpc(self,method,params):
         """
@@ -45,7 +51,7 @@ class PyLimeRc:
             Returns:
                 string: The session key. Each instance keeps the session key internally.
         """
-        params = {'username':username, 'password':password}
+        params = self.__format_params(locals().copy())
         method = "get_session_key"
         r = self.call_rpc(method,params)
         self.session_key = r.json()['result'];
@@ -60,8 +66,8 @@ class PyLimeRc:
         Returns:
             string: The requested value
         """
+        params = self.__format_params(locals().copy())
         method = "get_site_settings"
-        params = {'sSessionKey':self.session_key,'sSettingName':sSettingName}
         r = self.call_rpc(method,params)
         return r.json()['result'];
 
@@ -76,10 +82,8 @@ class PyLimeRc:
             Returns:
                 string: The requested value or an list of all values when sStatName = 'all'
         """
+        params = self.__format_params(locals().copy())
         method = "get_summary"
-        params = {'sSessionKey':self.session_key,'iSurveyID':iSurveyID}
-        if sStatName is not None:
-            params['sStatName'] = sStatName
         r = self.call_rpc(method,params)
         return r.json()['result'];
 
@@ -93,8 +97,8 @@ class PyLimeRc:
             Returns:
                 list: list with the properties
         """
+        params = self.__format_params(locals().copy())
         method = "get_survey_properties"
-        params = {'sSessionKey':self.session_key,'iSurveyID':iSurveyID,'aSurveySettings':aSurveySettings}
         r = self.call_rpc(method,params)
         return r.json()['result'];
 
@@ -112,13 +116,8 @@ class PyLimeRc:
             Returns:
                 list|int: iGroupID - ID of the new group or status
         """
+        params = self.__format_params(locals().copy())
         method = "import_group"
-        params = {'sSessionKey':self.session_key,'iSurveyID':iSurveyID,
-                  'sImportData':sImportData,'sImportDataType':sImportDataType}
-        if sNewGroupName is not None:
-            params[sNewGroupName] = sNewGroupName
-        if sNewGroupDescription is not None:
-            params[sNewGroupDescription] = sNewGroupDescription
         r = self.call_rpc(method,params)
         return r.json()['result'];
 
@@ -134,12 +133,8 @@ class PyLimeRc:
             Returns:
                 list|integer: iSurveyID - ID of the new survey
         """
+        params = self.__format_params(locals().copy())
         method = "import_survey"
-        params = {'sSessionKey':self.session_key,'sImportData':sImportData,'sImportDataType':sImportDataType}
-        if sNewSurveyName is not None:
-            params['sNewSurveyName'] = sNewSurveyName
-        if DestSurveyID is not None:
-            params['DestSurveyID'] = DestSurveyID
         r = self.call_rpc(method,params)
         return r.json()['result'];
 
@@ -153,8 +148,8 @@ class PyLimeRc:
             Returns:
                 list: The list of groups
         """
+        params = self.__format_params(locals().copy())
         method = "list_groups"
-        params = {'sSessionKey':self.session_key,'iSurveyID':iSurveyID}
         r = self.call_rpc(method,params)
         return r.json()['result'];
 
@@ -175,12 +170,8 @@ class PyLimeRc:
             Returns:
                 list: The list of tokens
         """
+        params = self.__format_params(locals().copy())
         method = "list_participants"
-        params = {'sSessionKey':self.session_key,'iSurveyID':iSurveyID,
-                  'iStart':iStart,'iLimit':iLimit,
-                  'bUnused':bUnused,'aAttributes':aAttributes}
-        if aConditions is not None:
-            params['aConditions'] = aConditions
         r = self.call_rpc(method,params)
         return r.json()['result'];
 
@@ -196,11 +187,8 @@ class PyLimeRc:
             Returns:
                 list: The list of surveys
         """
+        params = self.__format_params(locals().copy())
         method = "list_surveys"
-        params = {'sSessionKey':self.session_key}
-        if sUser is not None:
-            params['sUser'] = sUser
-        r = self.call_rpc(method,params)
         return r.json()['result'];
 
     def release_session_key(self):
@@ -209,8 +197,8 @@ class PyLimeRc:
             Returns:
                    Return a string with the status.
         """
+        params = self.__format_params(locals().copy())
         method = "release_session_key"
-        params = {'sSessionKey':self.session_key}
         r = self.call_rpc(method,params)
         return r.json()['result'];
 
@@ -224,8 +212,8 @@ class PyLimeRc:
             Returns:
                 list: The result of the activation
         """
+        params = self.__format_params(locals().copy())
         method = "activate_survey"
-        params = {'sSessionKey':self.session_key, 'iSurveyID':iSurveyID}
         r = self.call_rpc(method,params)
         return r.json()['result'];
 
@@ -236,8 +224,8 @@ class PyLimeRc:
             Returns:
                 list: The list of users
         """
+        params = self.__format_params(locals().copy())
         method = "list_users"
-        params = {'sSessionKey':self.session_key}
         r = self.call_rpc(method,params)
         return r.json()['result'];
 
@@ -253,17 +241,18 @@ class PyLimeRc:
             Returns:
                 list: The list of questions
         """
+        params = self.__format_params(locals().copy())
         method = "list_questions"
-        params = {'sSessionKey':self.session_key, 'iSurveyID':iSurveyID}
-        if iGroupID is not None:
-            params['iGroupID'] = iGroupID
-        if sLanguage is not None:
-            params['sLanguage'] = sLanguage
         r = self.call_rpc(method,params)
         return r.json()['result'];
 
-    def import_question(self):
-        return;
+    def import_question(self,iSurveyID,iGroupID,sImportData,sImportDataType,
+                        sMandatory=None,sNewQuestionTitle=None,sNewqQuestion=None,
+                        sNewQuestionHelp=None):
+        params = self.__format_params(locals().copy())
+        method = "import_question"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
     """
     * RPC Routine to import a question - imports lsq,csv.
     *
