@@ -249,405 +249,522 @@ class PyLimeRc:
     def import_question(self,iSurveyID,iGroupID,sImportData,sImportDataType,
                         sMandatory=None,sNewQuestionTitle=None,sNewqQuestion=None,
                         sNewQuestionHelp=None):
+    	"""
+    		RPC Routine to import a question - imports lsq,csv.
+    		
+    		Args:
+    		    iSurveyID (int): The id of the survey that the question will belong
+    		    iGroupID (int): The id of the group that the question will belong
+    		    sImportData (str): String containing the BASE 64 encoded data of a lsg,csv
+    		    sImportDataType (str): lsq,csv
+    		    sMandatory (:obj:`str`): Mandatory question option (default to No)
+    		    sNewQuestionTitle (:obj:`str`): Optional new title for the question
+    		    sNewqQuestion (:obj:`str`): An optional new question
+    		    sNewQuestionHelp (:obj:`str`): An optional new question help text
+	    	Returns:
+    		    list|integer: iQuestionID - ID of the new question - Or status
+    	"""
         params = self.__format_params(locals().copy())
         method = "import_question"
         r = self.call_rpc(method,params)
         return r.json()['result'];
-    """
-    * RPC Routine to import a question - imports lsq,csv.
-    *
-    * @access public
-    * @param string $sSessionKey
-    * @param int $iSurveyID The id of the survey that the question will belong
-    * @param int $iGroupID The id of the group that the question will belong
-    * @param string $sImportData String containing the BASE 64 encoded data of a lsg,csv
-    * @param string $sImportDataType lsq,csv
-    * @param string $sMandatory Optional Mandatory question option (default to No)
-    * @param string $sNewQuestionTitle Optional new title for the question
-    * @param string $sNewqQuestion An optional new question
-    * @param string $sNewQuestionHelp An optional new question help text
-    * @return list|integer iQuestionID - ID of the new question - Or status
-    """
 
-    def invite_participants(self):
-        return;
-    """
-    * RPC Routine to invite participants in a survey
-    * Returns list of results of sending
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID ID of the survey that participants belong
-    * @return list Result of the action
-    """
+    def invite_participants(self,iSurveyID):
+    	"""
+    		RPC Routine to invite participants in a survey
+    		Returns list of results of sending
+    		
+    		Args:
+    		iSurveyID (int): ID of the survey that participants belong
+    		Returns:
+				list: Result of the action
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "invite_participants"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
 
-    def mail_registered_participants(self):
-        return;
-    """
-    * RPC Routine to send register mails to participants in a survey
-    * Returns list of results of sending
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID ID of the survey that participants belong
-    * @param list $overrideAllConditions replace the default conditions, like this:
-    * $overrideAllConditions = list(self);
-    * $overrideAllConditions[] = 'tid = 2';
-    * $response = $myJSONRPCClient->mail_registered_participants( $sessionKey, $survey_id, $overrideAllConditions );
-    * @return list Result of the action
-    """
+    def mail_registered_participants(self,iSurveyID,overrideAllConditions):
+    	"""
+    		RPC Routine to send register mails to participants in a survey
+    		Returns list of results of sending
+    		
+    		Args:
+    		iSurveyID (int): ID of the survey that participants belong
+    		overrideAllConditions (list): Replace the default conditions, like this:
+    			* overrideAllConditions = list(self);
+	    		* overrideAllConditions[] = 'tid = 2';
+    		    * response = $myJSONRPCClient->mail_registered_participants( $sessionKey, $survey_id, $overrideAllConditions );
+    		Returns:
+				list: Result of the action
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "mail_registered_participants"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
 
-    def activate_tokens(self):
-        return;
-    """
-    * RPC routine to to initialise the survey's collection of tokens where new participant tokens may be later added.
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param integer $iSurveyID ID of the survey where a token table will be created for
-    * @param list $aAttributeFields An list of integer describing any additional attribute fields
-    * @return list Status=>OK when successfull, otherwise the error description
-    """
-    def add_group(self):
-        return;
-    """
-    * RPC Routine to add an empty group with minimum details.
-    * Used as a placeholder for importing questions.
-    * Returns the groupid of the created group.
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Dd of the Survey to add the group
-    * @param string $sGroupTitle Name of the group
-    * @param string $sGroupDescription Optional description of the group
-    * @return list|int The id of the new group - Or status
-    """
-    def add_language(self):
-        return;
-    """
-    * RPC Routine to add a survey language.
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param integer $iSurveyID ID of the survey where a token table will be created for
-    * @param string $sLanguage A valid language shortcut to add to the current survey. If the language already exists no error will be given.
-    * @return list Status=>OK when successfull, otherwise the error description
-    """
-    def add_participants(self):
-        return;
-    """
-    * RPC Routine to add participants to the tokens collection of the survey.
-    * Returns the inserted data including additional new information like the Token entry ID and the token string.
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey
-    * @param struct $aParticipantData Data of the participants to be added
-    * @param bool Optional - Defaults to true and determins if the access token automatically created
-    * @return list The values added
-    """
-    def add_response(self):
-        return;
-    """
-    * RPC Routine to add a response to the survey responses collection.
-    * Returns the id of the inserted survey response
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey to insert responses
-    * @param struct $aResponseData The actual response
-    * @return int The response ID
-    """
-    def add_survey(self):
-        return;
-    """
-    * RPC Routine to add an empty survey with minimum details.
-    * Used as a placeholder for importing groups and/or questions.
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID The wish id of the Survey to add
-    * @param string $sSurveyTitle Title of the new Survey
-    * @param string $sSurveyLanguage Default language of the Survey
-    * @param string $sformat Question appearance format
-    * @return list|string|int
-    """
-    def cpd_importParticipants(self):
-        return;
-    """
-    * This function import a participant to the LimeSurvey cpd. It stores attributes as well, if they are registered before within ui
-    *
-    * Call the function with $response = $myJSONRPCClient->cpd_importParticipants( $sessionKey, $aParticipants);
-    *
-    * @param int $sSessionKey
-    * @param list $aParticipants
-    * [[0] => ["email"=>"dummy-02222@limesurvey.com","firstname"=>"max","lastname"=>"mustermann"]]
-    * @return list with status
-    """
-    def delete_group(self):
-        return;
-    """
-    * RPC Routine to delete a group of a survey .
-    * Returns the id of the deleted group.
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the survey that the group belongs
-    * @param int $iGroupID Id of the group to delete
-    * @return list|int The id of the deleted group or status
-    """
-    def delete_language(self):
-        return;
-    """
-    * RPC Routine to delete a survey language.
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param integer $iSurveyID ID of the survey where a token table will be created for
-    * @param string $sLanguage A valid language shortcut to delete from the current survey. If the language does not exist in that survey no error will be given.
-    * @return list Status=>OK when successfull, otherwise the error description
-    """
-    def delete_participants(self):
-        return;
-    """
-    * RPC Routine to delete multiple participants of a Survey.
-    * Returns the id of the deleted token
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey that the participants belong to
-    * @param list $aTokenIDs Id of the tokens/participants to delete
-    * @return list Result of deletion
-    """
-    def delete_question(self):
-        return;
-    """
-    * RPC Routine to delete a question of a survey .
-    * Returns the id of the deleted question.
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param int iQuestionID Id of the question to delete
-    * @return list|int Id of the deleted Question or status
-    """
-    def delete_survey(self):
-        return;
-    """
-    * RPC Routine to delete a survey.
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID The id of the Survey to be deleted
-    * @return list Returns Status
-    """
-    def export_responses(self):
-        return;
-    """
-    * RPC Routine to export responses.
-    * Returns the requested file as base64 encoded string
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey
-    * @param string $sDocumentType pdf,csv,xls,doc,json
-    * @param string $sLanguageCode The language to be used
-    * @param string $sCompletionStatus Optional 'complete','incomplete' or 'all' - defaults to 'all'
-    * @param string $sHeadingType 'code','full' or 'abbreviated' Optional defaults to 'code'
-    * @param string $sResponseType 'short' or 'long' Optional defaults to 'short'
-    * @param integer $iFromResponseID Optional
-    * @param integer $iToResponseID Optional
-    * @param list $aFields Optional Selected fields
-    * @return list|string On success: Requested file as base 64-encoded string. On failure list with error information
-    * """
-    def export_responses_by_token(self):
-        return;
-    """
-    * RPC Routine to export token response in a survey.
-    * Returns the requested file as base64 encoded string
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey
-    * @param string $sDocumentType pdf,csv,xls,doc,json
-    * @param string $sToken The token for which responses needed
-    * @param string $sLanguageCode The language to be used
-    * @param string $sCompletionStatus Optional 'complete','incomplete' or 'all' - defaults to 'all'
-    * @param string $sHeadingType 'code','full' or 'abbreviated' Optional defaults to 'code'
-    * @param string $sResponseType 'short' or 'long' Optional defaults to 'short'
-    * @param list $aFields Optional Selected fields
-    * @return list|string On success: Requested file as base 64-encoded string. On failure list with error information
-    *
-    """
-    def export_statistics(self):
-        return;
-    """
-    * RPC routine to export statistics of a survey to a user.
-    * Returns string - base64 encoding of the statistics.
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey
-    * @param string $docType Type of documents the exported statistics should be
-    * @param string $sLanguage Optional language of the survey to use
-    * @param string $graph Create graph option
-    * @param int|list $groupIDs An OPTIONAL list (ot a single int) containing the groups we choose to generate statistics from
-    * @return string Base64 encoded string with the statistics file
-    """
-    def export_timeline(self):
-        return;
-    """
-    * RPC Routine to export submission timeline.
-    * Returns an list of values (count and period)
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey
-    * @param string $sType (day|hour)
-    * @param string $dStart
-    * @param string $dEnd
-    * @return list On success: The timeline. On failure list with error information
-    * """
-    def get_group_properties(self):
-        return;
-    """
-    * RPC Routine to return properties of a group of a survey .
-    * Returns list of properties
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param int $iGroupID Id of the group to get properties
-    * @param list $aGroupSettings The properties to get
-    * @return list The requested values
-    """
-    def get_language_properties(self):
-        return;
-    """
-    * RPC Routine to get survey language properties.
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Dd of the Survey
-    * @param list $aSurveyLocaleSettings Properties to get
-    * @param string $sLang Language to use
-    * @return list The requested values
-    """
-    def get_participant_properties(self):
-        return;
-    """
-    * RPC Routine to return settings of a token/participant of a survey .
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey to get token properties
-    * @param int $iTokenID Id of the participant to check
-    * @param list $aTokenProperties The properties to get
-    * @return list The requested values
-    """
-    def get_question_properties(self):
-        return;
-    """
-    * RPC Routine to return properties of a question of a survey.
-    * Returns string
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param int $iQuestionID Id of the question to get properties
-    * @param list $aQuestionSettings The properties to get
-    * @param string $sLanguage Optional parameter language for multilingual questions
-    * @return list The requested values
-    """
-    def get_response_ids(self):
-        return;
-    """
-    * RPC Routine to find response IDs given a survey ID and a token.
-    * @param string $sSessionKey
-    * @param int $iSurveyID
-    * @param string $sToken
-    """
+    def activate_tokens(self,iSurveyID,aAttributeFields):
+    	"""
+    		RPC routine to to initialise the survey's collection of tokens where new participant tokens may be later added.
+    		
+    		Args:
+    			iSurveyID (int): ID of the survey where a token table will be created for
+    			aAttributeFields (int): An list of integer describing any additional attribute fields
+    		Returns:
+				list: Status=>OK when successfull, otherwise the error description
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "activate_tokens"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
 
-    def remind_participants(self):
-        return;
-    """
-    * RPC Routine to send reminder for participants in a survey
-    * Returns list of results of sending
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID ID of the survey that participants belong
-    * @param int $iMinDaysBetween Optional parameter days from last reminder
-    * @param int $iMaxReminders Optional parameter Maximum reminders count
-    * @return list Result of the action
-    """
-    def set_group_properties(self):
-        return;
-    """
-    * RPC Routine to set group properties.
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param integer $iGroupID - ID of the survey
-    * @param list|struct $aGroupData - An list with the particular fieldnames as keys and their values to set on that particular survey
-    * @return list Of succeeded and failed modifications according to internal validation.
-    """
-    def set_language_properties(self):
-        return;
-    """
-    * RPC Routine to set survey language properties.
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param integer $iSurveyID - ID of the survey
-    * @param list|struct $aSurveyLocaleData - An list with the particular fieldnames as keys and their values to set on that particular survey
-    * @param string $sLanguage - Optional - Language to update - if not give the base language of the particular survey is used
-    * @return list Status=>OK, when save successful otherwise error text.
-    """
-    def set_participant_properties(self):
-        return;
-    """
-    * RPC Routine to set properties of a survey participant/token.
-    * Returns list
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the survey that participants belong
-    * @param int $iTokenID Id of the participant to alter
-    * @param list|struct $aTokenData Data to change
-    * @return list Result of the change action
-    """
-    def set_question_properties(self):
-        return;
-    """
-    * RPC Routine to set question properties.
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param integer $iQuestionID - ID of the question
-    * @param list|struct $aQuestionData - An list with the particular fieldnames as keys and their values to set on that particular question
-    * @param string $sLanguage Optional parameter language for multilingual questions
-    * @return list Of succeeded and failed modifications according to internal validation.
-    """
-    def set_survey_properties(self):
-        return;
-    """
-    * RPC Routine to set survey properties.
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param integer $iSurveyID - ID of the survey
-    * @param list|struct $aSurveyData - An list with the particular fieldnames as keys and their values to set on that particular survey
-    * @return list Of succeeded and failed nodifications according to internal validation.
-    """
-    def update_response(self):
-        return;
-    """
-    * RPC Routine to update a response in a given survey.
-    * Routine supports only single response updates.
-    * Response to update will be identified either by the response id, or the token if response id is missing.
-    * Routine is only applicable for active surveys with alloweditaftercompletion = Y.
-    *
-    * @access public
-    * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey to update response
-    * @param struct $aResponseData The actual response
-    * @return mixed TRUE(bool) on success. errormessage on error
-    """
+    def add_group(self,iSurveyID,sGroupTitle,sGroupDescription=None):
+    	"""
+    		RPC Routine to add an empty group with minimum details.
+    		Used as a placeholder for importing questions.
+    		Returns the groupid of the created group.
+    		
+    		Args:
+    			iSurveyID (int): Dd of the Survey to add the group
+    			sGroupTitle (str): Name of the group
+    			sGroupDescription (:obj:`str`): Optional description of the group
+    		Returns:
+				list|int: The id of the new group - Or status
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "add_group"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def add_language(self,iSurveyID,sLanguage):
+    	"""
+    		RPC Routine to add a survey language.
+    		
+			Args:
+    			iSurveyID (int): ID of the survey where a token table will be created for
+    			sLanguage (str): A valid language shortcut to add to the current survey. If the language already exists no error will be given.
+    		Returns:
+				list: Status=>OK when successfull, otherwise the error description
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "add_language"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def add_participants(self,iSurveyID,aParticipantData,bCreateToken=None):
+    	"""
+    		RPC Routine to add participants to the tokens collection of the survey.
+    		Returns the inserted data including additional new information like the Token entry ID and the token string.
+    		
+    		Args:
+    			iSurveyID (int): Id of the Survey
+    			aParticipantData (dict): Data of the participants to be added
+    			bCreateToken (:obj:`bool`): Optional - Defaults to true (rpc side) and determins if the access token automatically created
+    			Returns:
+					list: The values added
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "add_participants"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def add_response(self,iSurveyID,aResponseData):
+    	"""
+    		RPC Routine to add a response to the survey responses collection.
+    		Returns the id of the inserted survey response
+    		
+    		Args:
+    			iSurveyID (int): Id of the Survey to insert responses
+    			aResponseData (dict): The actual response
+    		Returns:
+				int: The response ID
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "add_response"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def add_survey(self,iSurveyID,sSurveyTitle,sSurveyLanguage,sformat):
+    	"""
+    		RPC Routine to add an empty survey with minimum details.
+    		Used as a placeholder for importing groups and/or questions.
+    		
+    		Args:
+    			iSurveyID (int): The wish id of the Survey to add
+    			sSurveyTitle (str): Title of the new Survey
+    			sSurveyLanguage (str): Default language of the Survey
+    			sformat (str): Question appearance format
+    		Returns: 
+				list|string|int: return values (not described at RPC Api documentation)
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "add_survey"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def cpd_importParticipants(self,aParticipants):
+    	"""
+    		This function import a participant to the LimeSurvey cpd. It stores attributes as well, if they are registered before within ui
+    		
+    		Args:
+    			aParticipants (list): [[0] => ["email"=>"dummy-02222@limesurvey.com","firstname"=>"max","lastname"=>"mustermann"]]
+    		Returns: 
+				list: List with status
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "cpd_importParticipants"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def delete_group(self,iSurveyID,iGroupID):
+    	"""
+    		RPC Routine to delete a group of a survey .
+    		Returns the id of the deleted group.
+    		
+    		Args:
+    			iSurveyID (int): Id of the survey that the group belongs
+    			iGroupID (int): Id of the group to delete
+    		Returns:
+				list|int: The id of the deleted group or status
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "delete_group"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def delete_language(self,iSurveyID,sLanguage):
+    	"""
+    		RPC Routine to delete a survey language.
+    		
+    		Args:
+    			iSurveyID (int): ID of the survey where a token table will be created for
+    			sLanguage (str): A valid language shortcut to delete from the current survey. If the language does not exist in that survey no error will be given.
+    		Returns:
+				list: Status=>OK when successfull, otherwise the error description
+    		"""
+        params = self.__format_params(locals().copy())
+        method = "delete_language"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def delete_participants(self,iSurveyID,aTokenIDs):
+    	"""
+    		RPC Routine to delete multiple participants of a Survey.
+    		Returns the id of the deleted token
+    		
+    		Args:
+    			iSurveyID (int): Id of the Survey that the participants belong to
+    			aTokenIDs (list): Id of the tokens/participants to delete
+    		Returns:
+				list: Result of deletion
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "delete_participants"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def delete_question(self,iQuestionID):
+    	"""
+    		RPC Routine to delete a question of a survey .
+    		Returns the id of the deleted question.
+    		
+    		Args:
+    			iQuestionID (int): Id of the question to delete
+    		Returns:
+				list|int: Id of the deleted Question or status
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "delete_question"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def delete_survey(self,iSurveyID):
+    	"""
+    		RPC Routine to delete a survey.
+    		
+    		Args:
+    			iSurveyID (int): The id of the Survey to be deleted
+    		Returns:
+				list: Returns Status
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "delete_survey"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def export_responses(self,iSurveyID,sDocumentType,sLanguageCode,
+			sCompletionStatus=None,sHeadingType=None,sResponseType=None,
+			iFromResponseID=None,iToResponseID=None,aFields=None):
+    	"""
+    		RPC Routine to export responses.
+    		Returns the requested file as base64 encoded string
+    		
+    		Args:
+    			iSurveyID (int): Id of the Survey
+    			sDocumentType (str): pdf,csv,xls,doc,json
+    			sLanguageCode (str): The language to be used
+    			sCompletionStatus (:obj:`str`): Optional 'complete','incomplete' or 'all' - defaults to 'all'
+    			sHeadingType (:obj:`str`): 'code','full' or 'abbreviated' Optional defaults to 'code'
+    			sResponseType (:obj:`str`): 'short' or 'long' Optional defaults to 'short'
+    			iFromResponseID (:obj:`int`): Optional
+    			iToResponseID (:obj:`int`): Optional
+    			aFields (list) Optional Selected fields
+    		Returns:
+				list|string: On success: Requested file as base 64-encoded string. On failure list with error information
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "export_responses"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def export_responses_by_token(self,iSurveyID,sDocumentType,sToken,sLanguageCode,
+			sCompletionStatus=None,sHeadingType=None,sResponseType=None,aFields=None):
+    	"""
+    		RPC Routine to export token response in a survey.
+    		Returns the requested file as base64 encoded string
+    		
+    		Args:
+    			iSurveyID (int): Id of the Survey
+    			sDocumentType (str): pdf,csv,xls,doc,json
+    			sToken (str): The token for which responses needed
+    			sLanguageCode (str): The language to be used
+    			sCompletionStatus (:obj:`str`): Optional 'complete','incomplete' or 'all' - defaults to 'all'
+    			sHeadingType (:obj:`str`): 'code','full' or 'abbreviated' Optional defaults to 'code'
+    			sResponseType (:obj:`str`): 'short' or 'long' Optional defaults to 'short'
+    			aFields (list) Optional Selected fields
+    		Returns:
+				list|string: On success: Requested file as base 64-encoded string. On failure list with error information
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "export_responses_by_token"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def	export_statistics(self,iSurveyID,docType,
+			sLanguage=None,graph=None,groupIDs=None):
+    	"""
+    		RPC routine to export statistics of a survey to a user.
+    		Returns string - base64 encoding of the statistics.
+    		
+    		Args:
+    			iSurveyID (int): Id of the Survey
+    			docType (str): Type of documents the exported statistics should be
+    			sLanguage (:obj:`str`): Optional language of the survey to use
+    			graph (:obj:`str`): Create graph option
+    			groupIDs (int|list): An OPTIONAL list (ot a single int) containing the groups we choose to generate statistics from
+    		Returns:
+				string: Base64 encoded string with the statistics file
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "export_statistics"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def export_timeline(self,iSurveyID,sType,dStart,dEnd):
+    	"""
+    		RPC Routine to export submission timeline.
+    		Returns an list of values (count and period)
+    		
+    		Args:
+    			iSurveyID (int): Id of the Survey
+    			sType (str): (day|hour)
+    			dStart (str): start
+    			dEnd (str): end
+    		Returns:
+				list: On success: The timeline. On failure list with error information
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "export_timeline"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def get_group_properties(self,iGroupID,aGroupSettings):
+    	"""
+    		RPC Routine to return properties of a group of a survey .
+    		Returns list of properties
+    		
+    		Args:
+    			iGroupID (int): Id of the group to get properties
+    			aGroupSettings (list): The properties to get
+    		Returns:
+				list: The requested values
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "get_group_properties"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def get_language_properties(self,iSurveyID,aSurveyLocaleSettings,sLang):
+    	"""
+    		RPC Routine to get survey language properties.
+    		
+    		Args:
+    			iSurveyID (int): Dd of the Survey
+    			aSurveyLocaleSettings (list): Properties to get
+    			sLang (str): Language to use
+    		Returns:
+				list: The requested values
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "get_language_properties"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def get_participant_properties(self,iSurveyID,iTokenID,aTokenProperties):
+    	"""
+    		RPC Routine to return settings of a token/participant of a survey .
+    		
+    		Args:
+    			iSurveyID (int): Id of the Survey to get token properties
+    			iTokenID (int): Id of the participant to check
+    			aTokenProperties (list): The properties to get
+    		Returns:
+				list: The requested values
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "get_participant_properties"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def	get_question_properties(self,iQuestionID,aQuestionSettings,sLanguage=None):
+    	"""
+    		RPC Routine to return properties of a question of a survey.
+    		Returns string
+    		
+    		Args:
+    			iQuestionID (int): Id of the question to get properties
+    			aQuestionSettings (list): The properties to get
+    			sLanguage (:obj:`str`): Optional parameter language for multilingual questions
+    		Returns:
+				list: The requested values
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "get_question_properties"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def get_response_ids(self,iSurveyID,sToken):
+    	"""
+    		RPC Routine to find response IDs given a survey ID and a token.
+			Args:
+    			iSurveyID (int): ID of the survey
+    			sToken (str): The token for which responses needed
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "get_response_ids"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def remind_participants(self,iSurveyID,iMinDaysBetween,iMaxReminders):
+    	"""
+    		RPC Routine to send reminder for participants in a survey
+    		Returns list of results of sending
+    		
+    		Args:
+    			iSurveyID (int): ID of the survey that participants belong
+    			iMinDaysBetween (:obj:`int`): Optional parameter days from last reminder
+    			iMaxReminders (:obj:`int`): Optional parameter Maximum reminders count
+    		Returns:
+				list: Result of the action
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "remind_participants"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def set_group_properties(self,iGroupID,aGroupData):
+    	"""
+    		RPC Routine to set group properties.
+    		
+    		Args:
+    			iGroupID (int): ID of the survey
+    			aGroupData (dict): A list with the particular fieldnames as keys and their values to set on that particular survey
+    		Returns:
+				list: Of succeeded and failed modifications according to internal validation.
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "set_group_properties"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def set_language_properties(self,iSurveyID,aSurveyLocaleData,sLanguage=None):
+    	"""
+    		RPC Routine to set survey language properties.
+    		
+    		Args:
+    			iSurveyID (int): - ID of the survey
+    			aSurveyLocaleData (dict): An list with the particular fieldnames as keys and their values to set on that particular survey
+    			sLanguage (:obj:`str`): Optional - Language to update - if not give the base language of the particular survey is used
+    		Returns:
+				list: Status=>OK, when save successful otherwise error text.
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "set_language_properties"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def set_participant_properties(self,iSurveyID,iTokenID,aTokenData):
+    	"""
+    		RPC Routine to set properties of a survey participant/token.
+    		Returns list
+    		
+    		Args:
+    			iSurveyID (int): Id of the survey that participants belong
+    			iTokenID (int): Id of the participant to alter
+    			aTokenData (list|dict) Data to change
+    		Returns:
+				list: Result of the change action
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "set_participant_properties"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def set_question_properties(self,iQuestionID,aQuestionData,sLanguage=None):
+    	"""
+    		RPC Routine to set question properties.
+    		
+    		Args:
+    			iQuestionID (int): ID of the question
+    			aQuestionData (list|dict): A list with the particular fieldnames as keys and their values to set on that particular question
+    			sLanguage (:obj:`str`): Optional parameter language for multilingual questions
+    		Returns:
+				list: List of succeeded and failed modifications according to internal validation.
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "set_question_properties"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def set_survey_properties(self,iSurveyID,aSurveyData):
+    	"""
+    		RPC Routine to set survey properties.
+    		
+    		Args:
+    			iSurveyID (int): ID of the survey
+    			aSurveyData (list|dict): A list with the particular fieldnames as keys and their values to set on that particular survey
+    		Returns:
+				list: List of succeeded and failed nodifications according to internal validation.
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "set_survey_properties"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+    def update_response(self,iSurveyID, aResponseData):
+    	"""
+    		RPC Routine to update a response in a given survey.
+    		Routine supports only single response updates.
+    		Response to update will be identified either by the response id, or the token if response id is missing.
+    		Routine is only applicable for active surveys with alloweditaftercompletion = Y.
+    		
+    		Args:
+    			iSurveyID (int): Id of the Survey to update response
+    			aResponseData (dict): The actual response
+    		Returns:
+				bool|str: True on success. errormessage on error
+    	"""
+        params = self.__format_params(locals().copy())
+        method = "update_response"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
