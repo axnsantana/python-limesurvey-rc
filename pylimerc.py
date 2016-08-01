@@ -14,6 +14,7 @@ class PyLimeRc:
 
     def __format_params(self,params):
         del params['self']
+        params['sSessionKey']=self.session_key
         return dict((k,v) for k,v in params.iteritems() if v is not None)
 
     def call_rpc(self,method,params):
