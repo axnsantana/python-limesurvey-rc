@@ -100,6 +100,7 @@ class PyLimeRc:
         """
         params = self.__format_params(locals().copy())
         method = "get_survey_properties"
+        print params
         r = self.call_rpc(method,params)
         return r.json()['result'];
 
@@ -231,7 +232,7 @@ class PyLimeRc:
         r = self.call_rpc(method,params)
         return r.json()['result'];
 
-    def list_questions(self, iSurveyID, iGroupID,  sLanguage):
+    def list_questions(self, iSurveyID, iGroupID=None,  sLanguage=None):
         """
             RPC Routine to return the ids and info of (sub-)questions of a survey/group.
             Returns list of ids and info.
@@ -259,10 +260,10 @@ class PyLimeRc:
     		    iGroupID (int): The id of the group that the question will belong
     		    sImportData (str): String containing the BASE 64 encoded data of a lsg,csv
     		    sImportDataType (str): lsq,csv
-    		    sMandatory (:obj:`str`): Mandatory question option (default to No)
-    		    sNewQuestionTitle (:obj:`str`): Optional new title for the question
-    		    sNewqQuestion (:obj:`str`): An optional new question
-    		    sNewQuestionHelp (:obj:`str`): An optional new question help text
+    		    sMandatory (:obj:`str`, optional): Mandatory question option (default to No)
+    		    sNewQuestionTitle (:obj:`str`, optional): Optional new title for the question
+    		    sNewqQuestion (:obj:`str`, optional): An optional new question
+    		    sNewQuestionHelp (:obj:`str`, optional): An optional new question help text
 	    	Returns:
     		    list|integer: iQuestionID - ID of the new question - Or status
     	"""
@@ -329,7 +330,7 @@ class PyLimeRc:
     		Args:
     			iSurveyID (int): Dd of the Survey to add the group
     			sGroupTitle (str): Name of the group
-    			sGroupDescription (:obj:`str`): Optional description of the group
+    			sGroupDescription (:obj:`str`,optional): Optional description of the group
     		Returns:
 				list|int: The id of the new group - Or status
     	"""
@@ -361,7 +362,7 @@ class PyLimeRc:
     		Args:
     			iSurveyID (int): Id of the Survey
     			aParticipantData (dict): Data of the participants to be added
-    			bCreateToken (:obj:`bool`): Optional - Defaults to true (rpc side) and determins if the access token automatically created
+    			bCreateToken (:obj:`bool`,optional): Optional - Defaults to true (rpc side) and determins if the access token automatically created
     			Returns:
 					list: The values added
     	"""
@@ -505,12 +506,12 @@ class PyLimeRc:
     			iSurveyID (int): Id of the Survey
     			sDocumentType (str): pdf,csv,xls,doc,json
     			sLanguageCode (str): The language to be used
-    			sCompletionStatus (:obj:`str`): Optional 'complete','incomplete' or 'all' - defaults to 'all'
-    			sHeadingType (:obj:`str`): 'code','full' or 'abbreviated' Optional defaults to 'code'
-    			sResponseType (:obj:`str`): 'short' or 'long' Optional defaults to 'short'
-    			iFromResponseID (:obj:`int`): Optional
-    			iToResponseID (:obj:`int`): Optional
-    			aFields (list) Optional Selected fields
+    			sCompletionStatus (:obj:`str`,optional): Optional 'complete','incomplete' or 'all' - defaults to 'all'
+    			sHeadingType (:obj:`str`,optional): 'code','full' or 'abbreviated' Optional defaults to 'code'
+    			sResponseType (:obj:`str`,optional): 'short' or 'long' Optional defaults to 'short'
+    			iFromResponseID (:obj:`int`,optional): Optional
+    			iToResponseID (:obj:`int`,optional): Optional
+                        aFields (:obj:`list`,optional) Optional Selected fields
     		Returns:
 				list|string: On success: Requested file as base 64-encoded string. On failure list with error information
     	"""
@@ -530,10 +531,10 @@ class PyLimeRc:
     			sDocumentType (str): pdf,csv,xls,doc,json
     			sToken (str): The token for which responses needed
     			sLanguageCode (str): The language to be used
-    			sCompletionStatus (:obj:`str`): Optional 'complete','incomplete' or 'all' - defaults to 'all'
-    			sHeadingType (:obj:`str`): 'code','full' or 'abbreviated' Optional defaults to 'code'
-    			sResponseType (:obj:`str`): 'short' or 'long' Optional defaults to 'short'
-    			aFields (list) Optional Selected fields
+    			sCompletionStatus (:obj:`str`,optional): Optional 'complete','incomplete' or 'all' - defaults to 'all'
+    			sHeadingType (:obj:`str`,optional): 'code','full' or 'abbreviated' Optional defaults to 'code'
+    			sResponseType (:obj:`str`,optional): 'short' or 'long' Optional defaults to 'short'
+                        aFields (:obj:`list`,optional) Optional Selected fields
     		Returns:
 				list|string: On success: Requested file as base 64-encoded string. On failure list with error information
     	"""
@@ -551,9 +552,9 @@ class PyLimeRc:
     		Args:
     			iSurveyID (int): Id of the Survey
     			docType (str): Type of documents the exported statistics should be
-    			sLanguage (:obj:`str`): Optional language of the survey to use
-    			graph (:obj:`str`): Create graph option
-    			groupIDs (int|list): An OPTIONAL list (ot a single int) containing the groups we choose to generate statistics from
+    			sLanguage (:obj:`str`,optional): Optional language of the survey to use
+    			graph (:obj:`str`,optional): Create graph option
+    			groupIDs (int|list,optional): An OPTIONAL list (ot a single int) containing the groups we choose to generate statistics from
     		Returns:
 				string: Base64 encoded string with the statistics file
     	"""
@@ -636,7 +637,7 @@ class PyLimeRc:
     		Args:
     			iQuestionID (int): Id of the question to get properties
     			aQuestionSettings (list): The properties to get
-    			sLanguage (:obj:`str`): Optional parameter language for multilingual questions
+    			sLanguage (:obj:`str`,optional): Optional parameter language for multilingual questions
     		Returns:
 				list: The requested values
     	"""
@@ -657,15 +658,15 @@ class PyLimeRc:
         r = self.call_rpc(method,params)
         return r.json()['result'];
 
-    def remind_participants(self,iSurveyID,iMinDaysBetween,iMaxReminders):
+    def remind_participants(self,iSurveyID,iMinDaysBetween=None,iMaxReminders=None):
     	"""
     		RPC Routine to send reminder for participants in a survey
     		Returns list of results of sending
 
     		Args:
     			iSurveyID (int): ID of the survey that participants belong
-    			iMinDaysBetween (:obj:`int`): Optional parameter days from last reminder
-    			iMaxReminders (:obj:`int`): Optional parameter Maximum reminders count
+    			iMinDaysBetween (:obj:`int`,optional): Optional parameter days from last reminder
+    			iMaxReminders (:obj:`int`,optional): Optional parameter Maximum reminders count
     		Returns:
 				list: Result of the action
     	"""
@@ -696,7 +697,7 @@ class PyLimeRc:
     		Args:
     			iSurveyID (int): - ID of the survey
     			aSurveyLocaleData (dict): An list with the particular fieldnames as keys and their values to set on that particular survey
-    			sLanguage (:obj:`str`): Optional - Language to update - if not give the base language of the particular survey is used
+    			sLanguage (:obj:`str`,optional): Optional - Language to update - if not give the base language of the particular survey is used
     		Returns:
 				list: Status=>OK, when save successful otherwise error text.
     	"""
@@ -729,7 +730,7 @@ class PyLimeRc:
     		Args:
     			iQuestionID (int): ID of the question
     			aQuestionData (list|dict): A list with the particular fieldnames as keys and their values to set on that particular question
-    			sLanguage (:obj:`str`): Optional parameter language for multilingual questions
+    			sLanguage (:obj:`str`,optional): Optional parameter language for multilingual questions
     		Returns:
 				list: List of succeeded and failed modifications according to internal validation.
     	"""
