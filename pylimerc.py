@@ -12,6 +12,22 @@ class PyLimeRc:
     def set_url(self,url):
         self.url=url
 
+    def __sort_params(self,method,params):
+        import yaml
+
+        config = yaml.safe_load(open('pylimerc.yml'))
+        sorted_params = []
+        if self.session_key is not None:
+            sorted_params.append(self.session_key)
+        sequence = config['lime_methods'][method]
+        for s in sequence:
+            param = params.get(s)
+            if param:
+                sorted_params.append(param)
+            else:
+                return sorted_params
+        return sorted_params
+
     def __format_params(self,params):
         del params['self']
         params['sSessionKey']=self.session_key
@@ -32,6 +48,12 @@ class PyLimeRc:
         """
         import requests
         import sys
+
+        print "Method: %s" % method
+        print "Params before: %s" % params
+        params = self.__sort_params(method,params)
+        print "Params sorted: %s" % params
+
         payload = {"method":method,"params":params,"id":1}
         try:
            r = requests.post(url=self.url, headers=self.headers, json=payload)
