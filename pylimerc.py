@@ -19,6 +19,10 @@ class PyLimeRc:
         sorted_params = []
         if self.session_key is not None:
             sorted_params.append(self.session_key)
+
+        if method not in config['lime_methods']:
+            return params.values()
+
         sequence = config['lime_methods'][method]
         for s in sequence:
             param = params.get(s)
@@ -77,8 +81,9 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "get_session_key"
         r = self.call_rpc(method,params)
-        self.session_key = r.json()['result'];
-        return self.session_key;
+        if type(r.json()['result']) is not dict:
+           self.session_key = r.json()['result']
+        return self.session_key
 
     def get_site_settings(self, sSettingName):
         """
@@ -92,7 +97,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "get_site_settings"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def get_summary(self,iSurveyID,sStatName=None):
         """
@@ -108,7 +113,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "get_summary"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def get_survey_properties(self,iSurveyID,aSurveySettings):
         """
@@ -124,7 +129,7 @@ class PyLimeRc:
         method = "get_survey_properties"
         print params
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def import_group(self,iSurveyID,sImportData,sImportDataType,
                      sNewGroupName=None,sNewGroupDescription=None):
@@ -143,7 +148,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "import_group"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def import_survey(self,sImportData,sImportDataType,sNewSurveyName=None,DestSurveyID=None):
         """
@@ -160,7 +165,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "import_survey"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def list_groups(self,iSurveyID):
         """
@@ -175,7 +180,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "list_groups"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def list_participants(self,iSurveyID,iStart,iLimit,bUnused,aAttributes,aConditions=None):
         """
@@ -197,7 +202,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "list_participants"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def list_surveys(self,sUser=None):
         """
@@ -214,7 +219,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "list_surveys"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def release_session_key(self):
         """
@@ -222,10 +227,13 @@ class PyLimeRc:
             Returns:
                    Return a string with the status.
         """
-        params = self.__format_params(locals().copy())
-        method = "release_session_key"
-        r = self.call_rpc(method,params)
-        return r.json()['result'];
+        if self.session_key:
+            params = self.__format_params(locals().copy())
+            method = "release_session_key"
+            r = self.call_rpc(method,params)
+            if r.json()['result'] == 'OK':
+                self.session_key = None
+        return
 
     def activate_survey(self,iSurveyID):
         """
@@ -240,7 +248,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "activate_survey"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def list_users(self):
         """
@@ -252,7 +260,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "list_users"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def list_questions(self, iSurveyID, iGroupID=None,  sLanguage=None):
         """
@@ -269,7 +277,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "list_questions"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def import_question(self,iSurveyID,iGroupID,sImportData,sImportDataType,
                         sMandatory=None,sNewQuestionTitle=None,sNewqQuestion=None,
@@ -292,7 +300,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "import_question"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def invite_participants(self,iSurveyID):
     	"""
@@ -307,7 +315,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "invite_participants"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def mail_registered_participants(self,iSurveyID,overrideAllConditions):
     	"""
@@ -326,7 +334,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "mail_registered_participants"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def activate_tokens(self,iSurveyID,aAttributeFields):
     	"""
@@ -341,7 +349,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "activate_tokens"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def add_group(self,iSurveyID,sGroupTitle,sGroupDescription=None):
     	"""
@@ -359,7 +367,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "add_group"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def add_language(self,iSurveyID,sLanguage):
     	"""
@@ -374,7 +382,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "add_language"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def add_participants(self,iSurveyID,aParticipantData,bCreateToken=None):
     	"""
@@ -391,7 +399,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "add_participants"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def add_response(self,iSurveyID,aResponseData):
     	"""
@@ -407,7 +415,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "add_response"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def add_survey(self,iSurveyID,sSurveyTitle,sSurveyLanguage,sformat):
     	"""
@@ -425,7 +433,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "add_survey"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def cpd_importParticipants(self,aParticipants):
     	"""
@@ -439,7 +447,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "cpd_importParticipants"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def delete_group(self,iSurveyID,iGroupID):
     	"""
@@ -455,7 +463,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "delete_group"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def delete_language(self,iSurveyID,sLanguage):
     	"""
@@ -470,7 +478,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "delete_language"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def delete_participants(self,iSurveyID,aTokenIDs):
     	"""
@@ -486,7 +494,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "delete_participants"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def delete_question(self,iQuestionID):
     	"""
@@ -501,7 +509,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "delete_question"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def delete_survey(self,iSurveyID):
     	"""
@@ -515,7 +523,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "delete_survey"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def export_responses(self,iSurveyID,sDocumentType,sLanguageCode,
 			sCompletionStatus=None,sHeadingType=None,sResponseType=None,
@@ -540,7 +548,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "export_responses"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def export_responses_by_token(self,iSurveyID,sDocumentType,sToken,sLanguageCode,
 			sCompletionStatus=None,sHeadingType=None,sResponseType=None,aFields=None):
@@ -563,7 +571,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "export_responses_by_token"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def	export_statistics(self,iSurveyID,docType,
 			sLanguage=None,graph=None,groupIDs=None):
@@ -583,7 +591,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "export_statistics"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def export_timeline(self,iSurveyID,sType,dStart,dEnd):
     	"""
@@ -601,7 +609,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "export_timeline"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def get_group_properties(self,iGroupID,aGroupSettings):
     	"""
@@ -617,7 +625,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "get_group_properties"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def get_language_properties(self,iSurveyID,aSurveyLocaleSettings,sLang):
     	"""
@@ -633,7 +641,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "get_language_properties"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def get_participant_properties(self,iSurveyID,iTokenID,aTokenProperties):
     	"""
@@ -649,7 +657,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "get_participant_properties"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def	get_question_properties(self,iQuestionID,aQuestionSettings,sLanguage=None):
     	"""
@@ -666,7 +674,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "get_question_properties"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def get_response_ids(self,iSurveyID,sToken):
     	"""
@@ -678,7 +686,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "get_response_ids"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def remind_participants(self,iSurveyID,iMinDaysBetween=None,iMaxReminders=None):
     	"""
@@ -695,7 +703,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "remind_participants"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def set_group_properties(self,iGroupID,aGroupData):
     	"""
@@ -710,7 +718,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "set_group_properties"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def set_language_properties(self,iSurveyID,aSurveyLocaleData,sLanguage=None):
     	"""
@@ -726,7 +734,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "set_language_properties"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def set_participant_properties(self,iSurveyID,iTokenID,aTokenData):
     	"""
@@ -743,7 +751,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "set_participant_properties"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def set_question_properties(self,iQuestionID,aQuestionData,sLanguage=None):
     	"""
@@ -759,7 +767,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "set_question_properties"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def set_survey_properties(self,iSurveyID,aSurveyData):
     	"""
@@ -774,7 +782,7 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "set_survey_properties"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
 
     def update_response(self,iSurveyID, aResponseData):
     	"""
@@ -792,4 +800,4 @@ class PyLimeRc:
         params = self.__format_params(locals().copy())
         method = "update_response"
         r = self.call_rpc(method,params)
-        return r.json()['result'];
+        return r.json()['result']
