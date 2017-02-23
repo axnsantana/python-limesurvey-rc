@@ -51,7 +51,7 @@ class PyLimeRc:
 
         print "Method: %s" % method
         print "Params before: %s" % params
-        params = self.__sort_params(method,params)
+        #params = self.__sort_params(method,params)
         print "Params sorted: %s" % params
 
         payload = {"method":method,"params":params,"id":1}
@@ -213,6 +213,18 @@ class PyLimeRc:
         """
         params = self.__format_params(locals().copy())
         method = "list_surveys"
+        r = self.call_rpc(method,params)
+        return r.json()['result'];
+
+
+    def list_cpd(self):
+        """
+            Closes the RPC session
+            Returns:
+                   Return a string with the status.
+        """
+        params = self.__format_params(locals().copy())
+        method = "list_cpd"
         r = self.call_rpc(method,params)
         return r.json()['result'];
 

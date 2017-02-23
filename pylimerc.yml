@@ -11,6 +11,7 @@ lime_methods:
     release_session_key: []
     activate_survey: ['iSurveyID']
     list_users: []
+    list_cpd: []
     list_questions: [ 'iSurveyID', 'iGroupID', 'sLanguage']
     import_question: ['iSurveyID','iGroupID','sImportData','sImportDataType','sMandatory','sNewQuestionTitle','sNewqQuestion','sNewQuestionHelp']
     invite_participants: ['iSurveyID']
