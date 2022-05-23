@@ -1,8 +1,7 @@
 class PyLimeRc:
 
     def __init__(self,url=None):
-        self.headers = {'content-type':'application/json',
-               'connection':'Keep-Alive'}
+        self.headers = {'content-type':'application/json','connection':'Keep-Alive'}
         self.url=url
         self.session_key=None
 
@@ -53,10 +52,10 @@ class PyLimeRc:
         import requests
         import sys
 
-        print "Method: %s" % method
-        print "Params before: %s" % params
+        print ("Method: {}".format(method))
+        print ("Params before: {}".format(params))
         params = self.__sort_params(method,params)
-        print "Params sorted: %s" % params
+        print ("Params sorted: {}".format(params))
 
         payload = {"method":method,"params":params,"id":1}
         try:
@@ -127,7 +126,7 @@ class PyLimeRc:
         """
         params = self.__format_params(locals().copy())
         method = "get_survey_properties"
-        print params
+        print (params)
         r = self.call_rpc(method,params)
         return r.json()['result']
 
@@ -279,12 +278,8 @@ class PyLimeRc:
         r = self.call_rpc(method,params)
         return r.json()['result']
 
-    def import_question(self,iSurveyID,iGroupID,sImportData,sImportDataType,
-                        sMandatory=None,sNewQuestionTitle=None,sNewqQuestion=None,
-                        sNewQuestionHelp=None):
-    	"""
-    		RPC Routine to import a question - imports lsq,csv.
-
+    def import_question(self,iSurveyID,iGroupID,sImportData,sImportDataType,sMandatory=None,sNewQuestionTitle=None,sNewqQuestion=None,sNewQuestionHelp=None):
+        ''' RPC Routine to import a question - imports lsq,csv.
     		Args:
     		    iSurveyID (int): The id of the survey that the question will belong
     		    iGroupID (int): The id of the group that the question will belong
@@ -296,14 +291,14 @@ class PyLimeRc:
     		    sNewQuestionHelp (:obj:`str`, optional): An optional new question help text
 	    	Returns:
     		    list|integer: iQuestionID - ID of the new question - Or status
-    	"""
+    	'''
         params = self.__format_params(locals().copy())
         method = "import_question"
         r = self.call_rpc(method,params)
         return r.json()['result']
 
     def invite_participants(self,iSurveyID):
-    	"""
+        """
     		RPC Routine to invite participants in a survey
     		Returns list of results of sending
 
@@ -318,7 +313,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def mail_registered_participants(self,iSurveyID,overrideAllConditions):
-    	"""
+        """
     		RPC Routine to send register mails to participants in a survey
     		Returns list of results of sending
 
@@ -337,7 +332,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def activate_tokens(self,iSurveyID,aAttributeFields):
-    	"""
+        """
     		RPC routine to to initialise the survey's collection of tokens where new participant tokens may be later added.
 
     		Args:
@@ -352,7 +347,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def add_group(self,iSurveyID,sGroupTitle,sGroupDescription=None):
-    	"""
+        """
     		RPC Routine to add an empty group with minimum details.
     		Used as a placeholder for importing questions.
     		Returns the groupid of the created group.
@@ -370,7 +365,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def add_language(self,iSurveyID,sLanguage):
-    	"""
+        """
     		RPC Routine to add a survey language.
 
 			Args:
@@ -385,7 +380,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def add_participants(self,iSurveyID,aParticipantData,bCreateToken=None):
-    	"""
+        """
     		RPC Routine to add participants to the tokens collection of the survey.
     		Returns the inserted data including additional new information like the Token entry ID and the token string.
 
@@ -402,7 +397,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def add_response(self,iSurveyID,aResponseData):
-    	"""
+        """
     		RPC Routine to add a response to the survey responses collection.
     		Returns the id of the inserted survey response
 
@@ -418,7 +413,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def add_survey(self,iSurveyID,sSurveyTitle,sSurveyLanguage,sformat):
-    	"""
+        """
     		RPC Routine to add an empty survey with minimum details.
     		Used as a placeholder for importing groups and/or questions.
 
@@ -436,7 +431,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def cpd_importParticipants(self,aParticipants):
-    	"""
+        """
     		This function import a participant to the LimeSurvey cpd. It stores attributes as well, if they are registered before within ui
 
     		Args:
@@ -450,7 +445,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def delete_group(self,iSurveyID,iGroupID):
-    	"""
+        """
     		RPC Routine to delete a group of a survey .
     		Returns the id of the deleted group.
 
@@ -466,7 +461,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def delete_language(self,iSurveyID,sLanguage):
-    	"""
+        """
     		RPC Routine to delete a survey language.
 
     		Args:
@@ -481,7 +476,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def delete_participants(self,iSurveyID,aTokenIDs):
-    	"""
+        """
     		RPC Routine to delete multiple participants of a Survey.
     		Returns the id of the deleted token
 
@@ -497,7 +492,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def delete_question(self,iQuestionID):
-    	"""
+        """
     		RPC Routine to delete a question of a survey .
     		Returns the id of the deleted question.
 
@@ -512,7 +507,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def delete_survey(self,iSurveyID):
-    	"""
+        """
     		RPC Routine to delete a survey.
 
     		Args:
@@ -528,7 +523,7 @@ class PyLimeRc:
     def export_responses(self,iSurveyID,sDocumentType,sLanguageCode,
 			sCompletionStatus=None,sHeadingType=None,sResponseType=None,
 			iFromResponseID=None,iToResponseID=None,aFields=None):
-    	"""
+            """
     		RPC Routine to export responses.
     		Returns the requested file as base64 encoded string
 
@@ -544,15 +539,15 @@ class PyLimeRc:
                         aFields (:obj:`list`,optional) Optional Selected fields
     		Returns:
 				list|string: On success: Requested file as base 64-encoded string. On failure list with error information
-    	"""
-        params = self.__format_params(locals().copy())
-        method = "export_responses"
-        r = self.call_rpc(method,params)
-        return r.json()['result']
+            """
+            params = self.__format_params(locals().copy())
+            method = "export_responses"
+            r = self.call_rpc(method,params)
+            return r.json()['result']
 
     def export_responses_by_token(self,iSurveyID,sDocumentType,sToken,sLanguageCode,
 			sCompletionStatus=None,sHeadingType=None,sResponseType=None,aFields=None):
-    	"""
+            """
     		RPC Routine to export token response in a survey.
     		Returns the requested file as base64 encoded string
 
@@ -568,14 +563,14 @@ class PyLimeRc:
     		Returns:
 				list|string: On success: Requested file as base 64-encoded string. On failure list with error information
     	"""
-        params = self.__format_params(locals().copy())
-        method = "export_responses_by_token"
-        r = self.call_rpc(method,params)
-        return r.json()['result']
+            params = self.__format_params(locals().copy())
+            method = "export_responses_by_token"
+            r = self.call_rpc(method,params)
+            return r.json()['result']
 
     def	export_statistics(self,iSurveyID,docType,
 			sLanguage=None,graph=None,groupIDs=None):
-    	"""
+            """
     		RPC routine to export statistics of a survey to a user.
     		Returns string - base64 encoding of the statistics.
 
@@ -588,13 +583,13 @@ class PyLimeRc:
     		Returns:
 				string: Base64 encoded string with the statistics file
     	"""
-        params = self.__format_params(locals().copy())
-        method = "export_statistics"
-        r = self.call_rpc(method,params)
-        return r.json()['result']
+            params = self.__format_params(locals().copy())
+            method = "export_statistics"
+            r = self.call_rpc(method,params)
+            return r.json()['result']
 
     def export_timeline(self,iSurveyID,sType,dStart,dEnd):
-    	"""
+        """
     		RPC Routine to export submission timeline.
     		Returns an list of values (count and period)
 
@@ -612,7 +607,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def get_group_properties(self,iGroupID,aGroupSettings):
-    	"""
+        """
     		RPC Routine to return properties of a group of a survey .
     		Returns list of properties
 
@@ -628,7 +623,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def get_language_properties(self,iSurveyID,aSurveyLocaleSettings,sLang):
-    	"""
+        """
     		RPC Routine to get survey language properties.
 
     		Args:
@@ -644,7 +639,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def get_participant_properties(self,iSurveyID,iTokenID,aTokenProperties):
-    	"""
+        """
     		RPC Routine to return settings of a token/participant of a survey .
 
     		Args:
@@ -660,7 +655,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def	get_question_properties(self,iQuestionID,aQuestionSettings,sLanguage=None):
-    	"""
+        """
     		RPC Routine to return properties of a question of a survey.
     		Returns string
 
@@ -677,7 +672,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def get_response_ids(self,iSurveyID,sToken):
-    	"""
+        """
     		RPC Routine to find response IDs given a survey ID and a token.
 			Args:
     			iSurveyID (int): ID of the survey
@@ -689,7 +684,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def remind_participants(self,iSurveyID,iMinDaysBetween=None,iMaxReminders=None):
-    	"""
+        """
     		RPC Routine to send reminder for participants in a survey
     		Returns list of results of sending
 
@@ -706,7 +701,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def set_group_properties(self,iGroupID,aGroupData):
-    	"""
+        """
     		RPC Routine to set group properties.
 
     		Args:
@@ -721,7 +716,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def set_language_properties(self,iSurveyID,aSurveyLocaleData,sLanguage=None):
-    	"""
+        """
     		RPC Routine to set survey language properties.
 
     		Args:
@@ -737,7 +732,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def set_participant_properties(self,iSurveyID,iTokenID,aTokenData):
-    	"""
+        """
     		RPC Routine to set properties of a survey participant/token.
     		Returns list
 
@@ -754,7 +749,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def set_question_properties(self,iQuestionID,aQuestionData,sLanguage=None):
-    	"""
+        """
     		RPC Routine to set question properties.
 
     		Args:
@@ -770,7 +765,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def set_survey_properties(self,iSurveyID,aSurveyData):
-    	"""
+        """
     		RPC Routine to set survey properties.
 
     		Args:
@@ -785,7 +780,7 @@ class PyLimeRc:
         return r.json()['result']
 
     def update_response(self,iSurveyID, aResponseData):
-    	"""
+        """
     		RPC Routine to update a response in a given survey.
     		Routine supports only single response updates.
     		Response to update will be identified either by the response id, or the token if response id is missing.
