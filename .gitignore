@@ -8,4 +8,5 @@ venv
 /venv
 db.sqlite3
 /static
-.DS_Stor
+.idea
+.DS_Store

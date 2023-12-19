@@ -2,9 +2,12 @@ from pylimerc import PyLimeRc as RC
 
 URL = "https://myurl.com/index.php/admin/remotecontrol"
 SUVERY_ID = 123456
+USER = "username"
+PASS = "password"
+
 test = RC()
-test.set_url("")
-test.get_session_key("USERNAME", "PASSWORD")
+test.set_url(URL)
+test.get_session_key(USER,PASS)
 test.add_participants(SUVERY_ID,
                       [{
                           "firstname": "A",
