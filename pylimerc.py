@@ -1,10 +1,23 @@
+import os
 class PyLimeRc:
 
-    def __init__(self, url=None):
+    def __init__(self, url=None, path=None):
+        """
+        @param url: remote url
+        @param path: directory path to file pulimerc.yml; added because of Django
+        You can easly use:
+        import form django.settings BASE_DIR
+        and then:
+        myVar = PyLimeRC("website's URL",os.path.join(BASE_DIR,"django's-module-name"))
+        """
         self.headers = {'content-type': 'application/json',
                         'connection': 'Keep-Alive'}
         self.url = url
         self.session_key = None
+        if path==None:
+            self.path = "."
+        else:
+            self.path=path
 
     def set_headers(self, headers):
         self.headers = headers
@@ -15,7 +28,7 @@ class PyLimeRc:
     def __sort_params(self, method, params):
         import yaml
 
-        config = yaml.safe_load(open('pylimerc.yml'))
+        config = yaml.safe_load(open(os.path.join(self.path,'pylimerc.yml')))
         sorted_params = []
         if self.session_key is not None:
             sorted_params.append(self.session_key)
