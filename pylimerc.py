@@ -6,7 +6,7 @@ class PyLimeRc:
         @param url: remote url
         @param path: directory path to file pulimerc.yml; added because of Django
         You can easly use:
-        import form django.settings BASE_DIR
+        form django.settings import BASE_DIR
         and then:
         myVar = PyLimeRC("website's URL",os.path.join(BASE_DIR,"django's-module-name"))
         """
