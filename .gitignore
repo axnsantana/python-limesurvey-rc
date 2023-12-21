@@ -1,1 +1,12 @@
 **/*.pyc
+.vscode/**
+sql.txt
+*.pyc
+*~
+__pycache__
+venv
+/venv
+db.sqlite3
+/static
+.idea
+.DS_Store
