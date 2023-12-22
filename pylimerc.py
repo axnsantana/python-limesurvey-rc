@@ -3,10 +3,11 @@ from requests import Response
 
 
 class PyLimeRc:
-    def __init__(self, url=None):
+    def __init__(self, url=None, base_dir="."):
         self.headers = {"content-type": "application/json", "connection": "Keep-Alive"}
         self.url = url
         self.session_key = None
+        self.base_dir = base_dir
 
     def set_headers(self, headers):
         self.headers = headers
@@ -17,7 +18,9 @@ class PyLimeRc:
     def __sort_params(self, method, params):
         import yaml
 
-        config = yaml.safe_load(open("pylimerc.yml"))
+        with open(f"{self.base_dir}/pylimerc.yml", "r") as f:
+            config = yaml.safe_load(f)
+
         sorted_params = []
         if self.session_key is not None:
             sorted_params.append(self.session_key)
